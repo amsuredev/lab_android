@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">lab2</string>
+    <string-array name="colors">
+        <item>white</item>
+        <item>green</item>
+    </string-array>
+</resources>

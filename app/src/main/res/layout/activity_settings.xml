@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout
+    android:id="@+id/settings_linear"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Add"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_weight="0.3"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:text="Car brand"
+            android:textSize="20dp"
+            android:gravity="center">
+        </TextView>
+        <EditText
+            android:layout_weight="1"
+            android:id="@+id/settings_car_brand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:text="" />
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_weight="0.3"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:text="Car model"
+            android:textSize="20dp"
+            android:gravity="center"/>
+        <EditText
+            android:layout_weight="1"
+            android:id="@+id/settings_car_model"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:inputType="text"
+            android:text="" />
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_weight="0.3"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:text="Car price "
+            android:textSize="20dp"
+            android:gravity="center"/>
+        <EditText
+            android:layout_weight="1"
+            android:id="@+id/settings_car_price"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:inputType="numberDecimal"
+            android:text="" />
+    </LinearLayout>
+    <RadioGroup
+        android:id="@+id/settings_radio_g"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <RadioButton
+            android:id="@+id/settings_zero_hund"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0 - 100000 km" />
+
+        <RadioButton
+            android:id="@+id/settings_hund_two_hund"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="100000 - 200000 km" />
+
+        <RadioButton
+            android:id="@+id/settings_two_hun_plus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="200000+ km" />
+    </RadioGroup>
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Car condition"
+                android:textSize="15dp"
+                android:gravity="center"></TextView>
+            <RatingBar
+                android:layout_marginLeft="17dp"
+                android:id="@+id/settings_condition"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:numStars="5"/>
+        </TableRow>
+    </TableLayout>
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TableLayout
+                android:layout_weight="7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.5"
+                        android:paddingLeft="20dp"
+                        android:text="R"></TextView>
+
+                    <SeekBar
+                        android:id="@+id/settings_seekBarR"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="6"
+                        android:progress="33" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.5"
+                        android:paddingLeft="20dp"
+                        android:text="G"></TextView>
+
+                    <SeekBar
+                        android:id="@+id/settings_seekBarG"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="6"
+                        android:progress="75" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:paddingLeft="20dp"
+                        android:text="B">B</TextView>
+
+                    <SeekBar
+                        android:id="@+id/settings_seekBarB"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="6"
+                        android:progress="50" />
+                </TableRow>
+            </TableLayout>
+
+            <TextView
+                android:layout_weight="5"
+                android:id="@+id/settings_color"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@color/purple_200"
+                android:text="" />
+        </TableRow>
+    </TableLayout>
+
+    <TextView
+        android:id="@+id/settings_textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:paddingLeft="120dp"
+        android:text="additional equipment"
+        android:textSize="20dp" />
+
+    <CheckBox
+        android:id="@+id/settings_bluetooth"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Bluetooth" />
+
+    <CheckBox
+        android:id="@+id/settings_ABS"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ABS" />
+
+    <CheckBox
+        android:id="@+id/settings_leather_upholstery"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Leather upholstery" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Tel"
+            android:gravity="center"/>
+
+        <EditText
+            android:id="@+id/add_phone_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:inputType="phone"
+            android:text="" />
+
+        <Button
+            android:id="@+id/add_phone_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="PH" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="12dp"
+        android:layout_gravity="bottom">
+
+        <Button
+            android:id="@+id/settings_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Add"
+            android:layout_marginRight="12dp"/>
+
+        <Button
+            android:id="@+id/settings_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Cancel"
+            android:layout_marginLeft="12dp"/>
+    </LinearLayout>
+
+</LinearLayout>
+</ScrollView>
