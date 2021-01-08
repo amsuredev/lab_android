@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout
+        android:id="@+id/linear_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".Add"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <LinearLayout android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_weight="0.3"
+                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:text="@string/car_brand"
+                android:textSize="20dp"
+                android:gravity="center">
+            </TextView>
+            <TextView
+                android:layout_weight="1"
+                android:id="@+id/details_car_brand"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="" />
+        </LinearLayout>
+        <LinearLayout android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_weight="0.3"
+                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:text="@string/car_model"
+                android:textSize="20dp"
+                android:gravity="center">
+            </TextView>
+            <TextView
+                android:layout_weight="1"
+                android:id="@+id/details_car_model"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="" />
+        </LinearLayout>
+        <LinearLayout android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_weight="0.3"
+                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:text="@string/car_price"
+                android:textSize="20dp"
+                android:gravity="center">
+            </TextView>
+            <TextView
+                android:layout_weight="1"
+                android:id="@+id/details_car_price"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="" />
+        </LinearLayout>
+        <RadioGroup
+            android:id="@+id/details_radio_g"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <RadioButton
+                android:id="@+id/details_zero_hund"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/zero_hund" />
+
+            <RadioButton
+                android:id="@+id/details_hund_two_hund"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/hund_two_hund" />
+
+            <RadioButton
+                android:id="@+id/details_two_hun_plus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/two_hund_plus" />
+        </RadioGroup>
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/car_cond"
+                    android:textSize="15dp"
+                    android:gravity="center"></TextView>
+                <RatingBar
+                    android:layout_marginLeft="17dp"
+                    android:id="@+id/details_condition"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:numStars="5"/>
+            </TableRow>
+
+
+        </TableLayout>
+
+        <TextView
+            android:id="@+id/details_color"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_weight="5"
+            android:background="@color/purple_200"></TextView>
+
+        <TextView
+            android:id="@+id/details_textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:paddingLeft="120dp"
+            android:text="@string/add_eqt"
+            android:textSize="20dp" />
+
+        <CheckBox
+            android:id="@+id/details_bluetooth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/add_eqt" />
+
+        <CheckBox
+            android:id="@+id/details_ABS"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/abs" />
+
+        <CheckBox
+            android:id="@+id/details_leather_upholstery"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/leather" />
+
+
+
+    </LinearLayout>
+</ScrollView>

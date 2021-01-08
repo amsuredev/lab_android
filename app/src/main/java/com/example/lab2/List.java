@@ -54,7 +54,6 @@ public class List extends AppCompatActivity implements View.OnClickListener {
 
     ListView listView;
     SharedPreferences mSettings;
-    private String[] names = new String[] {"John", "Bob", "Alex", "Roman"};
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,27 +100,12 @@ public class List extends AppCompatActivity implements View.OnClickListener {
         });
 
         mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
-
-        //getListToDisplay();
         getListToDisplayNew();
 
 
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                /*
-                Set<String> my_set_before = mSettings.getAll().keySet();
-                int size_before = mSettings.getAll().size();
-                SharedPreferences.Editor editor = mSettings.edit();
-                editor.remove(String.valueOf(position - 1));
-                editor.apply();
-                adapter.notifyDataSetChanged();
-                getListToDisplay();
-                int size_after = mSettings.getAll().size();
-                Set<String> my_set_after = mSettings.getAll().keySet();
-                return true;
-
-                 */
                 SharedPreferences.Editor editor = mSettings.edit();
                 editor.remove(listView.getItemAtPosition(position).toString().split("\n")[0]);
                 editor.apply();
@@ -141,73 +125,6 @@ public class List extends AppCompatActivity implements View.OnClickListener {
     protected void onResume() {
         super.onResume();
         getListToDisplayNew();
-    }
-
-    public void getListToDisplay()
-    {
-
-        int size = mSettings.getAll().size();
-        String[] indexes = new String[size];
-        String[] brand = new String[size];
-        String[] model = new String[size];
-
-
-
-
-        String[] cars = new String[size];
-        for (int i = 0; i < size; i++)
-        {
-            Set<String> setElems = mSettings.getStringSet(String.valueOf(i), new HashSet<String>());
-            for (String word: setElems)
-            {
-                //cars[i] += "\n" + word;
-                if (word.contains(CAR_BRAND))
-                {
-                    String[] arr = word.split(this.SPLIT);
-                    if (arr.length > 1) {
-                        brand[i] = arr[1];
-                    }else
-                        {
-                            brand[i] = "Not Given";
-                        }
-                }
-                if (word.contains(CAR_MODEL))
-                {
-                    String[] arr = word.split(this.SPLIT);
-                    if (arr.length > 1) {
-                        model[i] = arr[1];
-                    }else
-                        {
-                            model[i] = "Not Given";
-                        }
-                }
-            }
-
-            //list[i] = String.valueOf(i) + " " + mSettings.getStringSet(String.valueOf(i))
-        }
-        for (int i = 0; i < size; i++) {
-            cars[i] = "Brand: " + brand[i] + "\n";
-            cars[i] += "Model: " + model[i];
-        }
-        adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1, cars);
-        listView.setAdapter(adapter);
-    }
-    public void list()
-    {
-        listView = (ListView) findViewById(R.id.list);
-        adapter = new ArrayAdapter<String>(this, R.layout.activity_list, names);
-        listView.setAdapter(adapter);
-        /*list.setOnItemClickListener(
-                new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        String val = (String)  list.getItemAtPosition(position);
-                        Toast.makeText(parent.getContext(), val, Toast.LENGTH_LONG).show();
-                    }
-                }
-        );
-         */
     }
 
     void getListToDisplayNew()

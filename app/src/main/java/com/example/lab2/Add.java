@@ -67,20 +67,11 @@ public class Add extends AppCompatActivity implements SeekBar.OnSeekBarChangeLis
     final String CAR_ABS = "carAbs_";
     final String CAR_LEATHER = "carLeather_";
     final String INDEX = "index_";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-
-        //SharedPreferences mySharedPrefernces = getSharedPreferences(APP_PREFERENCES)
-        /*
-        mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = mSettings.edit();
-        editor.putString(APP_TEXT_COLOR, "yellow");
-        editor.apply();
-
-         */
-
 
         sk_R = (SeekBar) findViewById(R.id.settings_seekBarR);
         sk_G = (SeekBar) findViewById(R.id.settings_seekBarG);

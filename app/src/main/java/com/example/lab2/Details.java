@@ -23,6 +23,7 @@ import static com.example.lab2.Add.APP_PREFERENCES;
 
 public class Details extends AppCompatActivity implements View.OnClickListener {
 
+
     final String SPLIT = "_";
 
     final String CAR_BRAND = "carBrand_";
