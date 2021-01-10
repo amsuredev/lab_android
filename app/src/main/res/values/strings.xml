@@ -31,4 +31,7 @@
     <string name="back">Back</string>
     <string name="modify">Modify</string>
     <string name="go_to_modify">Go modify</string>
+    <string name="text_size">Text size</string>
+    <string name="text_preview">Text preview</string>
+    <string name="color_preview">Color preview</string>
 </resources>

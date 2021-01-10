@@ -81,9 +81,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.main_add_button:
-                //this code need to be deleted after testing
                 Intent addActivity = new Intent(this, Add.class);
                 startActivityForResult(addActivity, 1);
+
                 break;
             case R.id.main_list_button:
                 //Intent intent_list = new Intent(this, List.class);
