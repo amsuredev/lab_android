@@ -1,30 +1,21 @@
 package com.example.lab2;
-
 import android.app.Activity;
-import android.app.ListFragment;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.HashSet;
-import java.util.Set;
 
 public class FragmentListCars extends Fragment {
     static interface CarListListener{
@@ -33,13 +24,8 @@ public class FragmentListCars extends Fragment {
 
     private CarListListener listener;
 
-    final String SPLIT = "_";
-    final String CAR_BRAND = "carBrand_";
-    final String CAR_MODEL = "carModel_";
 
     private ListView list_cars;
-    private SharedPreferences mSettings;
-    public static final String APP_PREFERENCES = "mysettings";
 
     Activity activity;
     private SQLiteDatabase db;
@@ -49,7 +35,6 @@ public class FragmentListCars extends Fragment {
     {
         super.onAttach(activity);
         this.activity = activity;
-        mSettings = activity.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
         this.listener = (CarListListener)activity;
     }
     @Override
@@ -88,62 +73,6 @@ public class FragmentListCars extends Fragment {
         return view;
     }
 
-    public String[] getArr()
-    {
-        int size = mSettings.getAll().size();
-        String[] cars = new String[size];
-        String[] keys = new String[size];
-        String[] brand = new String[size];
-        String[] model = new String[size];
-
-        int i = 0;//sztuczny index
-
-        for (String key: mSettings.getAll().keySet())
-        {
-            Set<String> setElems = mSettings.getStringSet(key,  new HashSet<String>());
-            keys[i] = key;
-            for (String word: setElems)
-            {
-                //cars[i] += "\n" + word;
-                if (word.contains(CAR_BRAND))
-                {
-                    String[] arr = word.split(this.SPLIT);
-                    if (arr.length > 1) {
-                        brand[i] = arr[1];
-                    }else
-                    {
-                        brand[i] = "Not Given";
-                    }
-                }
-                if (word.contains(CAR_MODEL))
-                {
-                    String[] arr = word.split(this.SPLIT);
-                    if (arr.length > 1) {
-                        model[i] = arr[1];
-                    }else
-                    {
-                        model[i] = "Not Given";
-                    }
-                }
-            }
-            i++;
-        }
-        for (int j = 0; j < size; j++) {
-            cars[j] = keys[j] + "\n";
-            cars[j] += "Brand: " + brand[j] + "\n";
-            cars[j] += "Model: " + model[j];
-        }
-        return cars;
-    }
-    /*
-    @Override
-    public void onStart() {
-        super.onStart();
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>((Activity)listener, android.R.layout.simple_list_item_1, getArr());
-        list_cars.setAdapter(adapter);
-    }
-
-     */
 
     @Override
     public void onStart() {

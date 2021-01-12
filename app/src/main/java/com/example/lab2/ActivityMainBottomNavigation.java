@@ -1,8 +1,6 @@
 package com.example.lab2;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -69,22 +67,7 @@ public class ActivityMainBottomNavigation extends AppCompatActivity {
         int text_size = mSettings.getInt(TEXT_SIZE, -1);
         if (text_size != -1) {
             preview_message.setTextSize(text_size);
-            /*
-            switch (text_size){
 
-            }
-                case 12:
-                    preview_message.setTextSize(text_size);
-                    break;
-                case 15:
-                    preview_message.setTextSize(text_size);
-                    break;
-                case 18:
-                    preview_message.setTextSize(text_size);
-                    break;
-        }
-
-             */
         }
     }
 

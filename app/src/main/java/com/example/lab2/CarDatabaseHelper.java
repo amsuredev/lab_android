@@ -1,6 +1,4 @@
 package com.example.lab2;
-
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -29,12 +27,6 @@ public class CarDatabaseHelper extends SQLiteOpenHelper {
                     + "BLUETOOTH NUMERIC, "
                     + "ABS NUMERIC, "
                     + "LEATHER NUMERIC);");
-        /*
-        ContentValues volvo = new ContentValues();
-        volvo.put("BRAND", "Volvo");
-        volvo.put("MODEL", "XC90");
-        db.insert("CAR", null, volvo);
-         */
     }
 
     @Override

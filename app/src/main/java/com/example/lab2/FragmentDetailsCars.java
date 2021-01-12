@@ -1,17 +1,12 @@
 package com.example.lab2;
-
 import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Color;
 import android.os.Bundle;
-
 import android.app.Fragment;;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,24 +17,8 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.HashSet;
-import java.util.Set;
-
 public class FragmentDetailsCars extends Fragment {
     private String key;
-    final String SPLIT = "_";
-
-    final String CAR_BRAND = "carBrand_";
-    final String CAR_MODEL = "carModel_";
-    final String CAR_PRICE = "carPrice_";
-    final String CAR_MILEAGE = "carMileage_";
-    final String CAR_CONDITION = "carCondition_";
-    final String CAR_R = "caR_";
-    final String CAR_G = "carG_";
-    final String CAR_B = "carB_";
-    final String CAR_BLUETOOTH = "carBluetooth_";
-    final String CAR_ABS = "carAbs_";
-    final String CAR_LEATHER = "carLeather_";
 
     TextView car_brand;
     TextView car_model;
@@ -55,15 +34,10 @@ public class FragmentDetailsCars extends Fragment {
     CheckBox bluetooth;
     CheckBox ABS;
     CheckBox if_leather;
-
-    Button cancel;
     Button modify;
-    Button details_phone_button;
 
     Activity activity;
 
-    private SharedPreferences mSettings;
-    public static final String APP_PREFERENCES = "mysettings";
 
     public void setKey(String key){
         this.key = key;
@@ -74,7 +48,6 @@ public class FragmentDetailsCars extends Fragment {
     {
         super.onAttach(activity);
         this.activity = activity;
-        mSettings = activity.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
     }
 
     @Override
@@ -106,7 +79,6 @@ public class FragmentDetailsCars extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        //setViews();
         setViewsWithDb();
     }
 
@@ -144,124 +116,5 @@ public class FragmentDetailsCars extends Fragment {
             Toast toast = Toast.makeText(activity, "Database unavailable", Toast.LENGTH_SHORT);
             toast.show();
         }
-    }
-
-    public void setViews()
-    {
-        Set<String> setElems = mSettings.getStringSet(this.key, new HashSet<String>());
-        int red = 0;
-        int green = 0;
-        int blue = 0;
-        for (String elem: setElems)
-        {
-            if (elem.contains(CAR_R))
-            {
-                String[] arr = elem.split(SPLIT);
-                red = Integer.parseInt(arr[1]);
-            }
-            if (elem.contains(CAR_G))
-            {
-                String[] arr = elem.split(SPLIT);
-                green = Integer.parseInt(arr[1]);
-            }
-            if (elem.contains(CAR_B))
-            {
-                String[] arr = elem.split(SPLIT);
-                blue = Integer.parseInt(arr[1]);
-            }
-            if (elem.contains(CAR_BRAND))
-            {
-                String[] arr = elem.split(SPLIT);
-                if (arr.length > 1)
-                {
-                    this.car_brand.setText(arr[1]);
-                }else
-                {
-                    this.car_brand.setText("Not Given");
-                }
-            }
-            if (elem.contains(CAR_MODEL))
-            {
-                String[] arr = elem.split(SPLIT);
-                if (arr.length > 1)
-                {
-                    this.car_model.setText(arr[1]);
-                }else
-                {
-                    this.car_model.setText("Not Given");
-                }
-            }
-            if (elem.contains(CAR_PRICE))
-            {
-                String[] arr = elem.split(SPLIT);
-                if (arr.length > 1)
-                {
-                    this.car_price.setText(arr[1]);
-                }else
-                {
-                    this.car_price.setText("Not Given");
-                }
-            }
-            if (elem.contains(CAR_MILEAGE))
-            {
-                String[] arr = elem.split(SPLIT);
-                if (arr.length > 1)
-                {
-                    if(arr[1].equals("zeroHund"))
-                    {
-                        this.zero_hundr.setChecked(true);
-                    }
-                    else if(arr[1].equals("hundTwoHund"))
-                    {
-                        this.hund_two_hund.setChecked(true);
-                    }
-                    else {
-                        this.two_hund_plus.setChecked(true);
-                    }
-                }
-            }
-
-            if (elem.contains(CAR_CONDITION))
-            {
-                String[] arr = elem.split(SPLIT);
-                if (arr.length > 1)
-                {
-                    this.rating.setRating(Float.parseFloat(arr[1]));
-                }
-            }
-            if (elem.contains(CAR_BLUETOOTH))
-            {
-                String[] arr = elem.split(SPLIT);
-                if (arr.length > 1)
-                {
-                    if (arr[1].equals("true")) {
-                        this.bluetooth.setChecked(true);
-                    }
-                }
-            }
-
-            if (elem.contains(CAR_ABS))
-            {
-                String[] arr = elem.split(SPLIT);
-                if (arr.length > 1)
-                {
-                    if (arr[1].equals("true")) {
-                        this.ABS.setChecked(true);
-                    }
-                }
-            }
-
-            if (elem.contains(CAR_LEATHER))
-            {
-                String[] arr = elem.split(SPLIT);
-                if (arr.length > 1)
-                {
-                    if (arr[1].equals("true")) {
-                        this.if_leather.setChecked(true);
-                    }
-                }
-            }
-        }
-        this.details_color.setBackgroundColor(Color.rgb(red, green, blue));
     }
 }

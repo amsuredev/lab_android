@@ -1,8 +1,6 @@
 package com.example.lab2;
-
 import androidx.appcompat.app.AppCompatActivity;
 import android.app.FragmentTransaction;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;

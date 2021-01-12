@@ -1,13 +1,9 @@
 package com.example.lab2;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.AlertDialog;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -17,26 +13,17 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RatingBar;
 import android.widget.SeekBar;
-import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.HashSet;
-import java.util.Set;
-
 public class ActivityAddCar extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener, View.OnClickListener {
-    public static final String APP_PREFERENCES = "mysettings";
-    public static final String APP_TEXT_COLOR = "text_color"; // color
 
     private SQLiteDatabase db;
     private Cursor cursor;
-
-    SharedPreferences mSettings;
 
     EditText car_brand;
     EditText car_model;
@@ -62,19 +49,6 @@ public class ActivityAddCar extends AppCompatActivity implements SeekBar.OnSeekB
 
     TextView phone_num;
     Button phone_button;
-
-    final String CAR_BRAND = "carBrand_";
-    final String CAR_MODEL = "carModel_";
-    final String CAR_PRICE = "carPrice_";
-    final String CAR_MILEAGE = "carMileage_";
-    final String CAR_CONDITION = "carCondition_";
-    final String CAR_R = "caR_";
-    final String CAR_G = "carG_";
-    final String CAR_B = "carB_";
-    final String CAR_BLUETOOTH = "carBluetooth_";
-    final String CAR_ABS = "carAbs_";
-    final String CAR_LEATHER = "carLeather_";
-    final String INDEX = "index_";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -178,63 +152,6 @@ public class ActivityAddCar extends AppCompatActivity implements SeekBar.OnSeekB
                 break;
 
             case R.id.settings_add:
-                /*
-                mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = mSettings.edit();
-                Set<String> lines = new HashSet<String>();
-                lines.add(this.CAR_BRAND + car_brand.getText().toString());
-                lines.add(this.CAR_MODEL + car_model.getText().toString());
-                lines.add(this.CAR_PRICE + car_price.getText().toString());
-                if (this.zero_hund.isChecked()) {
-                    lines.add(this.CAR_MILEAGE + "zeroHund");
-                } else if (this.hund_two_hund.isChecked())
-                {
-                    lines.add(this.CAR_MILEAGE + "hundTwoHund");
-                }
-                else
-                    {
-                        lines.add(this.CAR_MILEAGE + "twoHundPlus");
-                    }
-                lines.add(String.valueOf(this.CAR_CONDITION + this.rating.getRating()));
-                lines.add(String.valueOf(this.CAR_R + convertToColorVal(this.sk_R.getProgress())));
-                lines.add(String.valueOf(this.CAR_G + convertToColorVal(this.sk_G.getProgress())));
-                lines.add(String.valueOf(this.CAR_B + convertToColorVal(this.sk_B.getProgress())));
-                if (this.bluetooth.isChecked())
-                {
-                    lines.add(this.CAR_BLUETOOTH + "true");
-                } else
-                    {
-                        lines.add(this.CAR_BLUETOOTH + "false");
-                    }
-                if (this.ABS.isChecked())
-                {
-                    lines.add(this.CAR_ABS + "true");
-                } else
-                {
-                    lines.add(CAR_ABS + "false");
-                }
-                if (this.if_leather.isChecked())
-                {
-                    lines.add(this.CAR_LEATHER + "true");
-                } else
-                {
-                    lines.add(this.CAR_LEATHER + "false");
-                }
-                String key = getNewKey();
-
-                lines.add(this.INDEX + key);
-                editor.putStringSet(key, lines);
-                editor.apply();
-
-                //extras to main
-
-                Intent to_main = new Intent();
-                to_main.putExtra("car_brand", car_brand.getText().toString());
-                to_main.putExtra("car_model", car_model.getText().toString());
-                setResult(RESULT_OK, to_main);
-                finish();
-
-                 */
                 addCarToDb();
                 onBackPressed();
         }
@@ -271,26 +188,6 @@ public class ActivityAddCar extends AppCompatActivity implements SeekBar.OnSeekB
         } catch (SQLiteException e) {
             Toast toast = Toast.makeText(this, "Database unavailable", Toast.LENGTH_SHORT);
             toast.show();
-        }
-    }
-
-    String getNewKey()
-    {
-        Set<String> keys = mSettings.getAll().keySet();
-        if (mSettings.getAll().size() == 0)
-        {
-            return "1";
-        } else {
-            int last_index = -1;
-            for (String key: keys)
-            {
-                if (Integer.parseInt(key) > last_index)
-                {
-                    last_index = Integer.parseInt(key);
-                }
-            }
-            String newKey = String.valueOf(++last_index);
-            return newKey;
         }
     }
 

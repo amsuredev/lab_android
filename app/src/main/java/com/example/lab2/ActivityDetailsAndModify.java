@@ -1,13 +1,10 @@
 package com.example.lab2;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.AlertDialog;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -17,33 +14,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import static com.example.lab2.ActivityAddCar.APP_PREFERENCES;
 
 public class ActivityDetailsAndModify extends AppCompatActivity implements View.OnClickListener {
-
-
-    final String SPLIT = "_";
-
-    final String CAR_BRAND = "carBrand_";
-    final String CAR_MODEL = "carModel_";
-    final String CAR_PRICE = "carPrice_";
-    final String CAR_MILEAGE = "carMileage_";
-    final String CAR_CONDITION = "carCondition_";
-    final String CAR_R = "caR_";
-    final String CAR_G = "carG_";
-    final String CAR_B = "carB_";
-    final String CAR_BLUETOOTH = "carBluetooth_";
-    final String CAR_ABS = "carAbs_";
-    final String CAR_LEATHER = "carLeather_";
 
     TextView car_brand;
     TextView car_model;
@@ -59,7 +36,6 @@ public class ActivityDetailsAndModify extends AppCompatActivity implements View.
     CheckBox bluetooth;
     CheckBox ABS;
     CheckBox if_leather;
-    SharedPreferences mSettings;
 
     String key;
 
@@ -89,7 +65,6 @@ public class ActivityDetailsAndModify extends AppCompatActivity implements View.
         details_color = findViewById(R.id.details_color);
 
 
-        mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
         modify.setOnClickListener(this);
 
         setViewsWithDb();
@@ -193,136 +168,6 @@ public class ActivityDetailsAndModify extends AppCompatActivity implements View.
         }
     }
 
-    private void replace_sets(Set<String> was, Set<String> changed)
-    {
-        for (String change_item: changed)
-        {
-            if (change_item.contains(CAR_BRAND))
-            {
-                for (String was_item: was)
-                {
-                    if (was_item.contains(CAR_BRAND))
-                    {
-                        was.remove(was_item);
-                        was.add(change_item);
-                        break;
-                    }
-                }
-            }
-        }
-
-        for (String change_item: changed)
-        {
-            if (change_item.contains(CAR_MODEL))
-            {
-                for (String was_item: was)
-                {
-                    if (was_item.contains(CAR_MODEL))
-                    {
-                        was.remove(was_item);
-                        was.add(change_item);
-                        break;
-                    }
-                }
-            }
-        }
-
-        for (String change_item: changed)
-        {
-            if (change_item.contains(CAR_PRICE))
-            {
-                for (String was_item: was)
-                {
-                    if (was_item.contains(CAR_PRICE))
-                    {
-                        was.remove(was_item);
-                        was.add(change_item);
-                        break;
-                    }
-                }
-            }
-        }
-
-        for (String change_item: changed)
-        {
-            if (change_item.contains(CAR_MILEAGE))
-            {
-                for (String was_item: was)
-                {
-                    if (was_item.contains(CAR_MILEAGE))
-                    {
-                        was.remove(was_item);
-                        was.add(change_item);
-                        break;
-                    }
-                }
-            }
-        }
-
-        for (String change_item: changed)
-        {
-            if (change_item.contains(CAR_CONDITION))
-            {
-                for (String was_item: was)
-                {
-                    if (was_item.contains(CAR_CONDITION))
-                    {
-                        was.remove(was_item);
-                        was.add(change_item);
-                        break;
-                    }
-                }
-            }
-        }
-
-        for (String change_item: changed)
-        {
-            if (change_item.contains(CAR_BLUETOOTH))
-            {
-                for (String was_item: was)
-                {
-                    if (was_item.contains(CAR_BLUETOOTH))
-                    {
-                        was.remove(was_item);
-                        was.add(change_item);
-                        break;
-                    }
-                }
-            }
-        }
-
-        for (String change_item: changed)
-        {
-            if (change_item.contains(CAR_ABS))
-            {
-                for (String was_item: was)
-                {
-                    if (was_item.contains(CAR_ABS))
-                    {
-                        was.remove(was_item);
-                        was.add(change_item);
-                        break;
-                    }
-                }
-            }
-        }
-
-        for (String change_item: changed)
-        {
-            if (change_item.contains(CAR_LEATHER))
-            {
-                for (String was_item: was)
-                {
-                    if (was_item.contains(CAR_LEATHER))
-                    {
-                        was.remove(was_item);
-                        was.add(change_item);
-                        break;
-                    }
-                }
-            }
-        }
-    }
 
     @Override
     public void onClick(View v) {
@@ -331,54 +176,6 @@ public class ActivityDetailsAndModify extends AppCompatActivity implements View.
                 onBackPressed();
 
             case R.id.details_modify:
-                /*
-                Set<String> setElems = mSettings.getStringSet(this.key, new HashSet<String>());
-                Set<String> changed = new HashSet<>();
-                changed.add(CAR_BRAND + car_brand.getText().toString());
-                changed.add(CAR_MODEL + car_model.getText().toString());
-                if (this.zero_hundr.isChecked()) {
-                    changed.add(this.CAR_MILEAGE + "zeroHund");
-                } else if (this.hund_two_hund.isChecked())
-                {
-                    changed.add(this.CAR_MILEAGE + "hundTwoHund");
-                }
-                else
-                {
-                    changed.add(this.CAR_MILEAGE + "twoHundPlus");
-                }
-                changed.add(this.CAR_CONDITION + this.rating.getRating());
-
-                if (this.bluetooth.isChecked())
-                {
-                    changed.add(this.CAR_BLUETOOTH + "true");
-                } else
-                {
-                    changed.add(this.CAR_BLUETOOTH + "false");
-                }
-                if (this.ABS.isChecked())
-                {
-                    changed.add(this.CAR_ABS + "true");
-                } else
-                {
-                    changed.add(CAR_ABS + "false");
-                }
-                if (this.if_leather.isChecked())
-                {
-                    changed.add(this.CAR_LEATHER + "true");
-                } else
-                {
-                    changed.add(this.CAR_LEATHER + "false");
-                }
-
-                replace_sets(setElems, changed);
-                SharedPreferences.Editor editor = mSettings.edit();
-                editor.remove(key);
-                editor.putStringSet(key, setElems);
-                editor.apply();
-                Boolean ifCommit = editor.commit();
-                onBackPressed();
-
-                 */
                 update_car_cal();
                 onBackPressed();
         }
