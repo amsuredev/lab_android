@@ -20,6 +20,7 @@ import android.widget.Toast;
 public class FragmentListCars extends Fragment {
     static interface CarListListener{
         void itemClicked(String key);
+        void longClick(String key);
     }
 
     private CarListListener listener;
@@ -65,7 +66,8 @@ public class FragmentListCars extends Fragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
-                db.delete("CAR", "_id=" + String.valueOf(id), null);
+                //db.delete("CAR", "_id=" + String.valueOf(id), null);
+                listener.longClick(String.valueOf(id));
                 setCursorToActivity();
                 return true;
             }
