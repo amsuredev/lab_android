@@ -3,25 +3,32 @@ package com.example.lab2;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.example.lab2.Add.APP_PREFERENCES;
+import static com.example.lab2.ActivityAddCar.APP_PREFERENCES;
 
-public class Details extends AppCompatActivity implements View.OnClickListener {
+public class ActivityDetailsAndModify extends AppCompatActivity implements View.OnClickListener {
 
 
     final String SPLIT = "_";
@@ -63,7 +70,7 @@ public class Details extends AppCompatActivity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_details);
+        setContentView(R.layout.activity_details_and_modify);
 
         Intent intent = getIntent();
         key = intent.getStringExtra("key");
@@ -85,7 +92,7 @@ public class Details extends AppCompatActivity implements View.OnClickListener {
         mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
         modify.setOnClickListener(this);
 
-        setViews();
+        setViewsWithDb();
 
         cancel = findViewById(R.id.details_cancel);
         cancel.setOnClickListener(new View.OnClickListener() {
@@ -112,123 +119,76 @@ public class Details extends AppCompatActivity implements View.OnClickListener {
         });
 
     }
-    public void setViews()
+
+
+    public void setViewsWithDb()
     {
-        Set<String> setElems = mSettings.getStringSet(this.key, new HashSet<String>());
-        int red = 0;
-        int green = 0;
-        int blue = 0;
-        for (String elem: setElems)
-        {
-            if (elem.contains(CAR_R))
-            {
-                String[] arr = elem.split(SPLIT);
-                red = Integer.parseInt(arr[1]);
-            }
-            if (elem.contains(CAR_G))
-            {
-                String[] arr = elem.split(SPLIT);
-                green = Integer.parseInt(arr[1]);
-            }
-            if (elem.contains(CAR_B))
-            {
-                String[] arr = elem.split(SPLIT);
-                blue = Integer.parseInt(arr[1]);
-            }
-            if (elem.contains(CAR_BRAND))
-            {
-                String[] arr = elem.split(SPLIT);
-                if (arr.length > 1)
-                {
-                    this.car_brand.setText(arr[1]);
-                }else
-                    {
-                        this.car_brand.setText("Not Given");
+        SQLiteDatabase db;
+        try {
+                SQLiteOpenHelper carDatabaseHelper = new CarDatabaseHelper(this);
+                db = carDatabaseHelper.getReadableDatabase();
+                Cursor cursor = db.query("CAR", new String[]{"BRAND", "MODEL", "PRICE", "MILEAGE", "ASSESSMENT", "R_COLOR", "G_COLOR", "B_COLOR", "BLUETOOTH", "ABS", "LEATHER"},
+                                        "_id = ?", new String[] {this.key},
+                                        null, null, null);
+                if (cursor.moveToFirst()){
+                    car_brand.setText(cursor.getString(0));
+                    car_model.setText(cursor.getString(1));
+                    car_price.setText(cursor.getString(2));
+                    if (cursor.getString(3) != null) {
+                        if (cursor.getString(3).equals("zero_hund")) {
+                            this.zero_hundr.setChecked(true);
+                        } else if (cursor.getString(3).equals("hund_two_hund")) {
+                            this.hund_two_hund.setChecked(true);
+                        } else if (cursor.getString(3).equals("two_hund_plus")) {
+                            two_hund_plus.setChecked(true);
+                        }
                     }
-            }
-            if (elem.contains(CAR_MODEL))
-            {
-                String[] arr = elem.split(SPLIT);
-                if (arr.length > 1)
-                {
-                    this.car_model.setText(arr[1]);
-                }else
-                {
-                    this.car_model.setText("Not Given");
+                    rating.setRating(cursor.getFloat(4));
+                    this.details_color.setBackgroundColor(Color.rgb(cursor.getInt(5), cursor.getInt(6), cursor.getInt(7)));
+                    this.bluetooth.setChecked(cursor.getInt(8) == 1);
+                    this.ABS.setChecked(cursor.getInt(9) == 1);
+                    this.if_leather.setChecked(cursor.getInt(10) == 1);
                 }
-            }
-            if (elem.contains(CAR_PRICE))
-            {
-                String[] arr = elem.split(SPLIT);
-                if (arr.length > 1)
-                {
-                    this.car_price.setText(arr[1]);
-                }else
-                {
-                    this.car_price.setText("Not Given");
-                }
-            }
-            if (elem.contains(CAR_MILEAGE))
-            {
-                String[] arr = elem.split(SPLIT);
-                if (arr.length > 1)
-                {
-                    if(arr[1].equals("zeroHund"))
-                    {
-                        this.zero_hundr.setChecked(true);
-                    }
-                        else if(arr[1].equals("hundTwoHund"))
-                    {
-                        this.hund_two_hund.setChecked(true);
-                    }
-                        else {
-                        this.two_hund_plus.setChecked(true);
-                    }
-                }
-            }
-
-            if (elem.contains(CAR_CONDITION))
-            {
-                String[] arr = elem.split(SPLIT);
-                if (arr.length > 1)
-                {
-                    this.rating.setRating(Float.parseFloat(arr[1]));
-                }
-            }
-            if (elem.contains(CAR_BLUETOOTH))
-            {
-                String[] arr = elem.split(SPLIT);
-                if (arr.length > 1)
-                {
-                    if (arr[1].equals("true")) {
-                        this.bluetooth.setChecked(true);
-                    }
-                }
-            }
-
-            if (elem.contains(CAR_ABS))
-            {
-                String[] arr = elem.split(SPLIT);
-                if (arr.length > 1)
-                {
-                    if (arr[1].equals("true")) {
-                        this.ABS.setChecked(true);
-                    }
-                }
-            }
-
-            if (elem.contains(CAR_LEATHER))
-            {
-                String[] arr = elem.split(SPLIT);
-                if (arr.length > 1)
-                {
-                    if (arr[1].equals("true")) {
-                        this.if_leather.setChecked(true);
-                    }
-                }
-            }
+            cursor.close();
+            db.close();
+        } catch(SQLiteException e) {
+            Toast toast = Toast.makeText(this, "Database unavailable", Toast.LENGTH_SHORT);
+            toast.show();
         }
-        this.details_color.setBackgroundColor(Color.rgb(red, green, blue));
+    }
+
+    public void update_car_cal(){
+        ContentValues newCarVals = new ContentValues();
+        newCarVals.put("BRAND", this.car_brand.getText().toString());
+        newCarVals.put("MODEL", this.car_model.getText().toString());
+        newCarVals.put("PRICE", this.car_price.getText().toString());
+        String mileage = null;
+        if (this.zero_hundr.isChecked()) {
+            mileage = "zero_hund";
+        } else if (this.hund_two_hund.isChecked()){
+            mileage = "hund_two_hund";
+        } else if (this.two_hund_plus.isChecked())
+        {
+            mileage = "two_hund_plus";
+        }
+        if (mileage != null) {
+            newCarVals.put("MILEAGE", mileage);
+        }
+        newCarVals.put("ASSESSMENT", this.rating.getRating());
+        newCarVals.put("BLUETOOTH", this.bluetooth.isChecked());
+        newCarVals.put("ABS", this.ABS.isChecked());
+        newCarVals.put("LEATHER", this.if_leather.isChecked());
+        //color not changed
+        CarDatabaseHelper myHelper = new CarDatabaseHelper(this);
+        try {
+            SQLiteDatabase db = myHelper.getWritableDatabase();
+            db.update("CAR", newCarVals,
+                    "_id = ?", new String[] {this.key});
+            db.close();
+        } catch(SQLiteException e) {
+            Toast toast = Toast.makeText(this, "Database unavailable", Toast.LENGTH_SHORT);
+            toast.show();
+        }
     }
 
     private void replace_sets(Set<String> was, Set<String> changed)
@@ -369,6 +329,7 @@ public class Details extends AppCompatActivity implements View.OnClickListener {
                 onBackPressed();
 
             case R.id.details_modify:
+                /*
                 Set<String> setElems = mSettings.getStringSet(this.key, new HashSet<String>());
                 Set<String> changed = new HashSet<>();
                 changed.add(CAR_BRAND + car_brand.getText().toString());
@@ -412,8 +373,11 @@ public class Details extends AppCompatActivity implements View.OnClickListener {
                 editor.remove(key);
                 editor.putStringSet(key, setElems);
                 editor.apply();
-                editor.commit();
-                Set<String> setElemsAfter = mSettings.getStringSet(this.key, new HashSet<String>());
+                Boolean ifCommit = editor.commit();
+                onBackPressed();
+
+                 */
+                update_car_cal();
                 onBackPressed();
         }
     }

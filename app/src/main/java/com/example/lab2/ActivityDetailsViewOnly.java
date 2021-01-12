@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class DetailsViewOnlyActivity extends AppCompatActivity implements View.OnClickListener {
+public class ActivityDetailsViewOnly extends AppCompatActivity implements View.OnClickListener {
     private String key;
     private Button back;
     private Button modify;
@@ -19,10 +19,10 @@ public class DetailsViewOnlyActivity extends AppCompatActivity implements View.O
         Intent intent = getIntent();
         key = intent.getStringExtra("key");
 
-        DetailFragmentCars detailFragmentCars = new DetailFragmentCars();
-        detailFragmentCars.setKey(key);
+        FragmentDetailsCars fragmentDetailsCars = new FragmentDetailsCars();
+        fragmentDetailsCars.setKey(key);
         FragmentTransaction fg = getFragmentManager().beginTransaction();
-        fg.replace(R.id.frag_container, detailFragmentCars);
+        fg.replace(R.id.frag_container, fragmentDetailsCars);
         //fg.addToBackStack(null);
         fg.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fg.commit();
@@ -42,7 +42,7 @@ public class DetailsViewOnlyActivity extends AppCompatActivity implements View.O
                 onBackPressed();
                 break;
             case R.id.modify:
-                Intent intent = new Intent(this, Details.class);
+                Intent intent = new Intent(this, ActivityDetailsAndModify.class);
                 intent.putExtra("key", key);
                 startActivity(intent);
         }

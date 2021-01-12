@@ -16,11 +16,11 @@ public class PageAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return new TextSizeFragment();
+                return new FragmentTextSize();
             case 1:
-                return new PreviewMessageFragment();
+                return new FragmentPreviewMessage();
             case 2:
-                return new ColorPreviewFragment();
+                return new FragmentColorPreview();
             default:
                 return null;
         }

@@ -5,7 +5,7 @@
     android:orientation="horizontal">
 
     <fragment
-        class="com.example.lab2.ListFragmentCars"
+        class="com.example.lab2.FragmentListCars"
         android:id="@+id/list_frag"
         android:layout_height="match_parent"
         android:layout_width="0dp"

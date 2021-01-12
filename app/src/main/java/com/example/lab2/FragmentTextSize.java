@@ -1,64 +1,82 @@
 package com.example.lab2;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link TextSizeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class TextSizeFragment extends Fragment {
+public class FragmentTextSize extends Fragment {
+    RadioGroup rg;
+    public static final String TEXT_SIZE = "TEXT_SIZE";
+    SharedPreferences mSettings;
+    public static final String PREVIEW_SETTINGS = "PREVIEW_SETTINGS";
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public TextSizeFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment TextSizeFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static TextSizeFragment newInstance(String param1, String param2) {
-        TextSizeFragment fragment = new TextSizeFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mSettings = context.getSharedPreferences(PREVIEW_SETTINGS, Context.MODE_PRIVATE);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_text_size, container, false);
+        View view = inflater.inflate(R.layout.fragment_text_size, container, false);
+        rg = (RadioGroup) view.findViewById(R.id.radio_group_text_size);
+        return view;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        int id = rg.getCheckedRadioButtonId();
+        SharedPreferences.Editor editor = mSettings.edit();
+        switch (id){
+            case -1:
+                return;
+            case R.id.text_size_12:
+                editor.putInt(TEXT_SIZE, 12);
+                break;
+            case R.id.text_size_15:
+                editor.putInt(TEXT_SIZE, 15);
+                break;
+            case R.id.text_size_18:
+                editor.putInt(TEXT_SIZE, 18);
+                break;
+        }
+        editor.apply();
+        editor.commit();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        int text_size = mSettings.getInt(TEXT_SIZE, -1);
+        if (text_size != -1){
+            switch (text_size){
+                case 12:
+                    rg.check(R.id.text_size_12);
+                    break;
+                case 15:
+                    rg.check(R.id.text_size_15);
+                    break;
+                case 18:
+                    rg.check(R.id.text_size_18);
+                    break;
+            }
+        }
     }
 }

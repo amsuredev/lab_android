@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents.Light">
-        <activity android:name=".MainBottomNavigationActivity">
+        <activity android:name=".ActivityMainBottomNavigation">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -17,22 +17,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ActivitySettingsTest"
+            android:name=".ActivitySettings"
             android:theme="@style/AppTheme" />
-        <activity
-            android:name=".SettingsActivity"
-            android:theme="@style/AppTheme" />
-        <activity android:name=".DetailsViewOnlyActivity" />
+        <activity android:name=".ActivityDetailsViewOnly" />
         <activity android:name=".ActivityListCars" />
-        <activity android:name=".Details" />
+        <activity android:name=".ActivityDetailsAndModify" />
         <activity
-            android:name=".List"
+            android:name=".ActivityAddCar"
             android:parentActivityName=".MainActivity" />
-        <activity
-            android:name=".Add"
-            android:parentActivityName=".MainActivity" />
-        <activity android:name=".MainActivity">
-        </activity>
     </application>
 
 </manifest>

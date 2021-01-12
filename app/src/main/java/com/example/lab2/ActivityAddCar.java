@@ -3,27 +3,39 @@ package com.example.lab2;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RatingBar;
 import android.widget.SeekBar;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class Add extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener, View.OnClickListener {
+public class ActivityAddCar extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener, View.OnClickListener {
     public static final String APP_PREFERENCES = "mysettings";
     public static final String APP_TEXT_COLOR = "text_color"; // color
+
+    private SQLiteDatabase db;
+    private Cursor cursor;
+
     SharedPreferences mSettings;
 
     EditText car_brand;
@@ -98,7 +110,7 @@ public class Add extends AppCompatActivity implements SeekBar.OnSeekBarChangeLis
         ABS = findViewById(R.id.settings_ABS);
         if_leather = findViewById(R.id.settings_leather_upholstery);
 
-        getSupportActionBar().setTitle("Add car");
+        getSupportActionBar().setTitle("ActivityAddCar car");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         phone_num = findViewById(R.id.add_phone_text);
@@ -166,6 +178,7 @@ public class Add extends AppCompatActivity implements SeekBar.OnSeekBarChangeLis
                 break;
 
             case R.id.settings_add:
+                /*
                 mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = mSettings.edit();
                 Set<String> lines = new HashSet<String>();
@@ -220,6 +233,44 @@ public class Add extends AppCompatActivity implements SeekBar.OnSeekBarChangeLis
                 to_main.putExtra("car_model", car_model.getText().toString());
                 setResult(RESULT_OK, to_main);
                 finish();
+
+                 */
+                addCarToDb();
+                onBackPressed();
+        }
+    }
+
+    private void addCarToDb(){
+        try{
+            SQLiteOpenHelper carDatabaseHelper = new CarDatabaseHelper(this);
+            db = carDatabaseHelper.getReadableDatabase();
+            ContentValues newCarVals = new ContentValues();
+            newCarVals.put("BRAND", this.car_brand.getText().toString());
+            newCarVals.put("MODEL", this.car_model.getText().toString());
+            newCarVals.put("PRICE", this.car_price.getText().toString());
+            String mileage = null;
+            if (this.zero_hund.isChecked()) {
+                mileage = "zero_hund";
+            } else if (this.hund_two_hund.isChecked()){
+                mileage = "hund_two_hund";
+            } else if (this.two_hund_plus.isChecked())
+            {
+                mileage = "two_hund_plus";
+            }
+            if (mileage != null) {
+                newCarVals.put("MILEAGE", mileage);
+            }
+            newCarVals.put("ASSESSMENT", this.rating.getRating());
+            newCarVals.put("BLUETOOTH", this.bluetooth.isChecked());
+            newCarVals.put("ABS", this.ABS.isChecked());
+            newCarVals.put("LEATHER", this.if_leather.isChecked());
+            newCarVals.put("R_COLOR", Integer.toString(convertToColorVal(this.sk_R.getProgress())));
+            newCarVals.put("G_COLOR", Integer.toString(convertToColorVal(this.sk_G.getProgress())));
+            newCarVals.put("B_COLOR", Integer.toString(convertToColorVal(this.sk_B.getProgress())));
+            db.insert("CAR", null, newCarVals);
+        } catch (SQLiteException e) {
+            Toast toast = Toast.makeText(this, "Database unavailable", Toast.LENGTH_SHORT);
+            toast.show();
         }
     }
 
@@ -240,6 +291,14 @@ public class Add extends AppCompatActivity implements SeekBar.OnSeekBarChangeLis
             }
             String newKey = String.valueOf(++last_index);
             return newKey;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (db != null) {
+            db.close();
         }
     }
 }

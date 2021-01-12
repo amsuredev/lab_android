@@ -4,6 +4,10 @@ import android.app.Activity;
 import android.app.ListFragment;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -13,13 +17,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CursorAdapter;
 import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class ListFragmentCars extends Fragment {
+public class FragmentListCars extends Fragment {
     static interface CarListListener{
         void itemClicked(String key);
     }
@@ -34,10 +41,14 @@ public class ListFragmentCars extends Fragment {
     private SharedPreferences mSettings;
     public static final String APP_PREFERENCES = "mysettings";
 
+    Activity activity;
+    private SQLiteDatabase db;
+    private Cursor cursor;
     @Override
     public void onAttach(Activity activity)
     {
         super.onAttach(activity);
+        this.activity = activity;
         mSettings = activity.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
         this.listener = (CarListListener)activity;
     }
@@ -52,12 +63,14 @@ public class ListFragmentCars extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_list_cars, container, false);
         list_cars = view.findViewById(R.id.list_cars);
+        setCursorToActivity();
 
         list_cars.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 TextView item = (TextView)view;
-                String key = item.getText().toString().split("\n")[0];
+                //String key = item.getText().toString().split("\n")[0];
+                String key = String.valueOf(id);
                 listener.itemClicked(key);
             }
         });
@@ -112,11 +125,47 @@ public class ListFragmentCars extends Fragment {
         }
         return cars;
     }
-
+    /*
     @Override
     public void onStart() {
         super.onStart();
         ArrayAdapter<String> adapter = new ArrayAdapter<String>((Activity)listener, android.R.layout.simple_list_item_1, getArr());
         list_cars.setAdapter(adapter);
+    }
+
+     */
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        setCursorToActivity();
+    }
+
+    private void setCursorToActivity()
+    {
+        try{
+            SQLiteOpenHelper carDatabaseHelper = new CarDatabaseHelper(activity);
+            db = carDatabaseHelper.getReadableDatabase();
+            cursor = db.query("CAR",
+                    new String[]{"_id", "BRAND"},
+                    null, null, null, null, null);
+            CursorAdapter listAdapter = new SimpleCursorAdapter(activity,
+                    android.R.layout.simple_list_item_1,
+                    cursor,
+                    new String[]{"BRAND"},
+                    new int[]{android.R.id.text1},
+                    0);
+            list_cars.setAdapter(listAdapter);
+        } catch (SQLiteException e) {
+            Toast toast = Toast.makeText(activity, "Database unavailable", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        cursor.close();
+        db.close();
     }
 }

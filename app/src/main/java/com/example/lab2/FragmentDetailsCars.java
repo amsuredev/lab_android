@@ -3,6 +3,10 @@ package com.example.lab2;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -16,11 +20,12 @@ import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class DetailFragmentCars extends Fragment {
+public class FragmentDetailsCars extends Fragment {
     private String key;
     final String SPLIT = "_";
 
@@ -55,6 +60,8 @@ public class DetailFragmentCars extends Fragment {
     Button modify;
     Button details_phone_button;
 
+    Activity activity;
+
     private SharedPreferences mSettings;
     public static final String APP_PREFERENCES = "mysettings";
 
@@ -66,6 +73,7 @@ public class DetailFragmentCars extends Fragment {
     public void onAttach(Activity activity)
     {
         super.onAttach(activity);
+        this.activity = activity;
         mSettings = activity.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
     }
 
@@ -78,7 +86,7 @@ public class DetailFragmentCars extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_detail_cars, container, false);
+        View view = inflater.inflate(R.layout.fragment_details_cars, container, false);
         car_brand = view.findViewById(R.id.details_car_brand);
         car_model = view.findViewById(R.id.details_car_model);
         car_price = view.findViewById(R.id.details_car_price);
@@ -98,7 +106,44 @@ public class DetailFragmentCars extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        setViews();
+        //setViews();
+        setViewsWithDb();
+    }
+
+    public void setViewsWithDb()
+    {
+        SQLiteDatabase db;
+        try {
+            SQLiteOpenHelper carDatabaseHelper = new CarDatabaseHelper(activity);
+            db = carDatabaseHelper.getReadableDatabase();
+            Cursor cursor = db.query("CAR", new String[]{"BRAND", "MODEL", "PRICE", "MILEAGE", "ASSESSMENT", "R_COLOR", "G_COLOR", "B_COLOR", "BLUETOOTH", "ABS", "LEATHER"},
+                    "_id = ?", new String[] {this.key},
+                    null, null, null);
+            if (cursor.moveToFirst()){
+                car_brand.setText(cursor.getString(0));
+                car_model.setText(cursor.getString(1));
+                car_price.setText(cursor.getString(2));
+                if (cursor.getString(3) != null) {
+                    if (cursor.getString(3).equals("zero_hund")) {
+                        this.zero_hundr.setChecked(true);
+                    } else if (cursor.getString(3).equals("hund_two_hund")) {
+                        this.hund_two_hund.setChecked(true);
+                    } else if (cursor.getString(3).equals("two_hund_plus")) {
+                        two_hund_plus.setChecked(true);
+                    }
+                }
+                rating.setRating(cursor.getFloat(4));
+                this.details_color.setBackgroundColor(Color.rgb(cursor.getInt(5), cursor.getInt(6), cursor.getInt(7)));
+                this.bluetooth.setChecked(cursor.getInt(8) == 1);
+                this.ABS.setChecked(cursor.getInt(9) == 1);
+                this.if_leather.setChecked(cursor.getInt(10) == 1);
+            }
+            cursor.close();
+            db.close();
+        } catch(SQLiteException e) {
+            Toast toast = Toast.makeText(activity, "Database unavailable", Toast.LENGTH_SHORT);
+            toast.show();
+        }
     }
 
     public void setViews()
