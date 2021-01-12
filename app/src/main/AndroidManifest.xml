@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents.Light">
-        <activity android:name=".ActivityMainBottomNavigation">
+        <activity android:name=".ActivityMainBottomNavigation"
+                android:label="@string/activity_main_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -18,13 +19,21 @@
         </activity>
         <activity
             android:name=".ActivitySettings"
-            android:theme="@style/AppTheme" />
-        <activity android:name=".ActivityDetailsViewOnly" />
-        <activity android:name=".ActivityListCars" />
-        <activity android:name=".ActivityDetailsAndModify" />
+            android:theme="@style/AppTheme"
+            android:label="@string/activity_settings_name"
+            android:parentActivityName=".ActivityMainBottomNavigation"/>
+        <activity android:name=".ActivityDetailsViewOnly"
+            android:parentActivityName=".ActivityListCars"
+            android:label="@string/activity_detail_name"/>
+        <activity android:name=".ActivityListCars"
+            android:parentActivityName=".ActivityMainBottomNavigation"
+            android:label="@string/activity_list_name"/>
+        <activity android:name=".ActivityDetailsAndModify"
+            android:label="@string/activity_modify_name"/>
         <activity
             android:name=".ActivityAddCar"
-            android:parentActivityName=".MainActivity" />
+            android:label="@string/activity_add_name"
+            android:parentActivityName=".ActivityMainBottomNavigation" />
     </application>
 
 </manifest>

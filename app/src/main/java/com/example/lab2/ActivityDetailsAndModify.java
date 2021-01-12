@@ -92,7 +92,6 @@ public class ActivityDetailsAndModify extends AppCompatActivity implements View.
                 callDialog.show();
             }
         });
-
     }
 
 

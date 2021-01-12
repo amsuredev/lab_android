@@ -1,5 +1,5 @@
 package com.example.lab2;
-import android.app.Activity;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -36,23 +36,20 @@ public class FragmentDetailsCars extends Fragment {
     CheckBox if_leather;
     Button modify;
 
-    Activity activity;
+    Context context;
 
 
     public void setKey(String key){
         this.key = key;
     }
 
-    @Override
-    public void onAttach(Activity activity)
-    {
-        super.onAttach(activity);
-        this.activity = activity;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (savedInstanceState != null){
+            this.key = savedInstanceState.getString("key");
+        }
     }
 
     @Override
@@ -73,6 +70,8 @@ public class FragmentDetailsCars extends Fragment {
         modify = view.findViewById(R.id.details_modify);
         details_color = view.findViewById(R.id.details_color);
 
+        context = inflater.getContext();
+
         return view;
     }
 
@@ -86,7 +85,7 @@ public class FragmentDetailsCars extends Fragment {
     {
         SQLiteDatabase db;
         try {
-            SQLiteOpenHelper carDatabaseHelper = new CarDatabaseHelper(activity);
+            SQLiteOpenHelper carDatabaseHelper = new CarDatabaseHelper(context);
             db = carDatabaseHelper.getReadableDatabase();
             Cursor cursor = db.query("CAR", new String[]{"BRAND", "MODEL", "PRICE", "MILEAGE", "ASSESSMENT", "R_COLOR", "G_COLOR", "B_COLOR", "BLUETOOTH", "ABS", "LEATHER"},
                     "_id = ?", new String[] {this.key},
@@ -113,8 +112,14 @@ public class FragmentDetailsCars extends Fragment {
             cursor.close();
             db.close();
         } catch(SQLiteException e) {
-            Toast toast = Toast.makeText(activity, "Database unavailable", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(context, "Database unavailable", Toast.LENGTH_SHORT);
             toast.show();
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("key", this.key);
     }
 }

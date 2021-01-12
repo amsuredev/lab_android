@@ -30,6 +30,9 @@ public class ActivityDetailsViewOnly extends AppCompatActivity implements View.O
 
         back.setOnClickListener(this);
         modify.setOnClickListener(this);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
     @Override

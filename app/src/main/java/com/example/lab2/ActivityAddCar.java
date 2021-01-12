@@ -84,8 +84,8 @@ public class ActivityAddCar extends AppCompatActivity implements SeekBar.OnSeekB
         ABS = findViewById(R.id.settings_ABS);
         if_leather = findViewById(R.id.settings_leather_upholstery);
 
-        getSupportActionBar().setTitle("ActivityAddCar car");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         phone_num = findViewById(R.id.add_phone_text);
         phone_button = findViewById(R.id.add_phone_button);
