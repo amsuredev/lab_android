@@ -143,6 +143,7 @@ public class ActivityDetailsAndModify extends AppCompatActivity implements View.
                             two_hund_plus.setChecked(true);
                         }
                     }
+                    float rating_num = cursor.getFloat(4);
                     rating.setRating(cursor.getFloat(4));
                     this.details_color.setBackgroundColor(Color.rgb(cursor.getInt(5), cursor.getInt(6), cursor.getInt(7)));
                     this.bluetooth.setChecked(cursor.getInt(8) == 1);
@@ -174,6 +175,7 @@ public class ActivityDetailsAndModify extends AppCompatActivity implements View.
         if (mileage != null) {
             newCarVals.put("MILEAGE", mileage);
         }
+        float rating = this.rating.getRating();
         newCarVals.put("ASSESSMENT", this.rating.getRating());
         newCarVals.put("BLUETOOTH", this.bluetooth.isChecked());
         newCarVals.put("ABS", this.ABS.isChecked());

@@ -73,8 +73,18 @@ public class FragmentListCars extends Fragment {
                 String key = String.valueOf(id);
                 listener.itemClicked(key);
             }
-        });
 
+
+        });
+        list_cars.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                db.delete("CAR", "_id=" + String.valueOf(id), null);
+                setCursorToActivity();
+                return true;
+            }
+        });
         return view;
     }
 
@@ -145,7 +155,7 @@ public class FragmentListCars extends Fragment {
     {
         try{
             SQLiteOpenHelper carDatabaseHelper = new CarDatabaseHelper(activity);
-            db = carDatabaseHelper.getReadableDatabase();
+            db = carDatabaseHelper.getWritableDatabase();
             cursor = db.query("CAR",
                     new String[]{"_id", "BRAND"},
                     null, null, null, null, null);
